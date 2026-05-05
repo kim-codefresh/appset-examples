@@ -5,6 +5,7 @@ metadata:
   annotations:
     argo.octopus.com/managed: "true"
 spec:
+  goTemplate: true
   generators:
     - git:
         repoURL: https://github.com/kim-codefresh/appset-examples.git
