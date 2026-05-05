@@ -7,7 +7,7 @@ metadata:
 spec:
   generators:
     - git:
-        repoURL: https://github.com/my-org/my-config-repo.git
+        repoURL: https://github.com/kim-codefresh/appset-examples.git
         revision: HEAD
         files:
           - path: "apps/**/params.json"
@@ -20,7 +20,7 @@ spec:
     spec:
       project: "{{if eq .env \"production\"}}prod{{else}}non-prod{{end}}"
       source:
-        repoURL: https://github.com/my-org/my-config-repo.git
+        repoURL: https://github.com/kim-codefresh/appset-examples.git
         targetRevision: HEAD
         path: "apps/{{.app}}/{{.env}}"
       destination:
