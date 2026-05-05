@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: multi-variable-appset
+  annotations:
+    argo.octopus.com/managed: "true"
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/my-org/my-config-repo.git
+        revision: HEAD
+        files:
+          - path: "clusters/*/apps/**/params.json"
+  template:
+    metadata:
+      name: "{{.cluster}}-{{.app}}-{{.env}}"
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/my-org/my-config-repo.git
+        targetRevision: "{{.revision}}"
+        path: "clusters/{{.cluster}}/apps/{{.app}}"
+      destination:
+        server: "{{.clusterUrl}}"
+        namespace: "{{.app}}-{{.env}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

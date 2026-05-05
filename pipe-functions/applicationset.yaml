@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: pipe-functions-appset
+  annotations:
+    argo.octopus.com/managed: "true"
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/my-org/my-config-repo.git
+        revision: HEAD
+        files:
+          - path: "clusters/*/apps/**/params.json"
+  template:
+    metadata:
+      # Pipe functions — option (a) simplified evaluator cannot handle these
+      name: "{{.path.basename | lower}}-{{.env}}"
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/my-org/my-config-repo.git
+        targetRevision: HEAD
+        # trimPrefix pipe — strips leading slash from path
+        path: "{{.path | trimPrefix \"/\"}}"
+      destination:
+        server: https://kubernetes.default.svc
+        # replace pipe — normalises env name for namespace
+        namespace: "{{.app | replace \"-\" \"_\" | lower}}"

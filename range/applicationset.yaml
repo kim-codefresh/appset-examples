@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: range-appset
+  annotations:
+    argo.octopus.com/managed: "true"
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/my-org/my-config-repo.git
+        revision: HEAD
+        files:
+          - path: "apps/**/params.json"
+  template:
+    metadata:
+      name: "{{.app}}-{{.env}}"
+      labels:
+        # Range — option (a) simplified evaluator cannot handle these
+        {{- range $k, $v := .labels}}
+        {{$k}}: {{$v}}
+        {{- end}}
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/my-org/my-config-repo.git
+        targetRevision: HEAD
+        path: "apps/{{.app}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{.app}}-{{.env}}"

@@ -1,0 +1,7 @@
+{
+  "cluster": "us-east-1",
+  "app": "payments-service",
+  "env": "staging",
+  "revision": "main",
+  "clusterUrl": "https://k8s.us-east-1.internal"
+}

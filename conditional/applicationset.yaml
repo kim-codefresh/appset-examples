@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: conditional-appset
+  annotations:
+    argo.octopus.com/managed: "true"
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/my-org/my-config-repo.git
+        revision: HEAD
+        files:
+          - path: "apps/**/params.json"
+  template:
+    metadata:
+      name: "{{.app}}-{{.env}}"
+      annotations:
+        # Conditionals — option (a) simplified evaluator cannot handle these
+        notifications.argoproj.io/subscribe.on-sync-failed.slack: "{{if eq .env \"production\"}}alerts-prod{{else}}alerts-dev{{end}}"
+    spec:
+      project: "{{if eq .env \"production\"}}prod{{else}}non-prod{{end}}"
+      source:
+        repoURL: https://github.com/my-org/my-config-repo.git
+        targetRevision: HEAD
+        path: "apps/{{.app}}/{{.env}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{.app}}"
