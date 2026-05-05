@@ -14,11 +14,10 @@ spec:
   template:
     metadata:
       name: "{{.app}}-{{.env}}"
-      labels:
-        # Range — option (a) simplified evaluator cannot handle these
-        {{- range $k, $v := .labels}}
-        {{$k}}: {{$v}}
-        {{- end}}
+      annotations:
+        # Range rendered into a single string annotation — valid YAML
+        # Real range directives in map keys (labels) produce invalid YAML pre-processing
+        app-tags: "{{range .tags}}{{.}},{{end}}"
     spec:
       project: default
       source:
