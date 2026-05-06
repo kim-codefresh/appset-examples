@@ -1,0 +1,21 @@
+apps/my-service/params.json
+  s_e5b8ed9c08446f::t_0244ed6fc853ab 1-8
+template-patch/applicationset.yaml
+  s_e5b8ed9c08446f::t_d5d41ac53615bc 1-42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "bf0e74edd41546668933582091335291a10b9cb7",
+  "prompts": {},
+  "sessions": {
+    "s_e5b8ed9c08446f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "32c5454b-d391-40c5-97e3-fbf56aa79817",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Kim Shalti Aharfi <kim.aharfi@octopus.com>"
+    }
+  }
+}
