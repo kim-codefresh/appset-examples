@@ -1,1 +1,8 @@
-{"app": "my-service", "env": "production"}
+{
+  "app": "my-service",
+  "env": "production",
+  "tags": ["backend", "payments"],
+  "autoSync": true,
+  "prune": true,
+  "valueFiles": ["values-common.yaml", "values-production.yaml"]
+}

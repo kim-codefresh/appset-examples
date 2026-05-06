@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: template-patch-appset
+  annotations:
+    argo.octopus.com/managed: "true"
+spec:
+  goTemplate: true
+  generators:
+    - git:
+        repoURL: https://github.com/kim-codefresh/appset-examples.git
+        revision: HEAD
+        files:
+          - path: "apps/**/params.json"
+  template:
+    metadata:
+      name: "{{.app}}-{{.env}}"
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/kim-codefresh/appset-examples.git
+        targetRevision: HEAD
+        path: "apps/{{.app}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{.app}}-{{.env}}"
+  # templatePatch allows templating of non-string YAML fields — booleans, lists, entire blocks.
+  # Regular template substitution only works on string values; templatePatch works at the YAML structure level.
+  templatePatch: |
+    spec:
+      {{- if .autoSync }}
+      syncPolicy:
+        automated:
+          prune: {{ .prune }}
+          selfHeal: false
+      {{- end }}
+      source:
+        helm:
+          valueFiles:
+          {{- range $f := .valueFiles }}
+            - {{ $f }}
+          {{- end }}
