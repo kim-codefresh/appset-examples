@@ -14,7 +14,7 @@ spec:
           - path: "apps/**/params.json"
   template:
     metadata:
-      name: "{{.app}}-{{.env}}"
+      name: "{{.app}}-{{.env}}-tp"
     spec:
       project: default
       source:
