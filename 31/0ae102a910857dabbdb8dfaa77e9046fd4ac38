@@ -1,0 +1,19 @@
+simple/applicationset.yaml
+  s_e5b8ed9c08446f::t_6df54fc1857b14 23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "310ae102a910857dabbdb8dfaa77e9046fd4ac38",
+  "prompts": {},
+  "sessions": {
+    "s_e5b8ed9c08446f": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "32c5454b-d391-40c5-97e3-fbf56aa79817",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "Kim Shalti Aharfi <kim.aharfi@octopus.com>"
+    }
+  }
+}
